@@ -1,0 +1,40 @@
+so101_leader:
+  ros__parameters:
+    calibration:
+      shoulder_pan:
+        id: 1
+        drive_mode: 0
+        homing_offset: 78
+        range_min: 642
+        range_max: 3388
+      shoulder_lift:
+        id: 2
+        drive_mode: 0
+        homing_offset: -494
+        range_min: 945
+        range_max: 3286
+      elbow_flex:
+        id: 3
+        drive_mode: 0
+        homing_offset: -700
+        range_min: 857
+        range_max: 3061
+      wrist_flex:
+        id: 4
+        drive_mode: 0
+        homing_offset: 155
+        range_min: 704
+        range_max: 3157
+      wrist_roll:
+        id: 5
+        drive_mode: 0
+        homing_offset: 182
+        range_min: 136
+        range_max: 4061
+      gripper:
+        id: 6
+        drive_mode: 0
+        homing_offset: -1557
+        range_min: 2047
+        range_max: 3500
+
