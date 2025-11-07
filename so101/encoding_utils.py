@@ -1,5 +1,5 @@
 # Copyright 2024 The HuggingFace Inc. team. All rights reserved.
-# Adapted for kiwi_robot
+# Adapted for ros2
 
 def encode_sign_magnitude(value: int, sign_bit_index: int):
     """
