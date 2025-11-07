@@ -18,7 +18,7 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='ros',
-    maintainer_email='isaac.j.blankenau@usace.army.mil',
+    maintainer_email='brianjblank7@gmail.com',
     description='TODO: Package description',
     license='Apache-2.0',
     extras_require={
