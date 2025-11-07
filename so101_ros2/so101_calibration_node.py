@@ -17,7 +17,7 @@ from rclpy.node import Node
 import yaml
 
 # Import SO101 communication components (local implementation)
-from so101_ros2.so101 import Motor, MotorCalibration, MotorNormMode, FeetechMotorsBus, OperatingMode
+from so101 import Motor, MotorCalibration, MotorNormMode, FeetechMotorsBus, OperatingMode
 
 class So101CalibrationNode(Node):
     """
