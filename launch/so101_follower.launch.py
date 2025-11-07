@@ -31,7 +31,7 @@ def generate_launch_description():
             'calibration_params',
             default_value=PathJoinSubstitution([
                 FindPackageShare('kiwi_robot'),
-                'config',
+                'params',
                 'so101_follower_calibration.yaml',
             ]),
             description='ROS 2 parameter file that defines follower arm calibration data'
