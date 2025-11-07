@@ -19,7 +19,7 @@ from std_msgs.msg import Header
 from std_srvs.srv import SetBool
 
 # SO101 communication modules
-from kiwi_robot.so101 import Motor, MotorCalibration, MotorNormMode, FeetechMotorsBus, OperatingMode
+from so101 import Motor, MotorCalibration, MotorNormMode, FeetechMotorsBus, OperatingMode
 
 
 class SO101Node(Node):
