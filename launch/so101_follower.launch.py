@@ -30,7 +30,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'calibration_params',
             default_value=PathJoinSubstitution([
-                FindPackageShare('kiwi_robot'),
+                FindPackageShare('so101_ros2'),
                 'params',
                 'so101_follower_calibration.yaml',
             ]),
