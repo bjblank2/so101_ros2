@@ -15,7 +15,7 @@ setup(
         (os.path.join('share', package_name, 'params'), glob('params/*.yaml')),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'pyserial'],
     zip_safe=True,
     maintainer='ros',
     maintainer_email='brianjblank7@gmail.com',
