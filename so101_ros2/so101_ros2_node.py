@@ -91,6 +91,9 @@ class SO101Node(Node):
             'wrist_roll': 'wrist_roll',
             'wrist_yaw': 'gripper'
         }
+        
+        # Servo resolution for velocity conversion
+        self.servo_resolution = 4096
 
         # Connect arm
         self.init_arm()
@@ -171,6 +174,22 @@ class SO101Node(Node):
                 self.get_logger().info(f'{self.mode.capitalize()} arm disconnected')
             except Exception as e:
                 self.get_logger().error(f'Error disconnecting: {e}')
+    
+    def _raw_vel_to_rad_s(self, raw_vel: int) -> float:
+        """Convert raw velocity value to rad/s.
+        
+        Args:
+            raw_vel: Raw velocity value from servo register
+            
+        Returns:
+            Velocity in rad/s
+        """
+        # Convert raw velocity to degrees per second, then to rad/s
+        # The velocity register typically stores velocity in units that scale with position
+        # For sts3215: velocity is in similar units to position (raw ticks)
+        # Convert: raw_vel * (360 deg / 4096 ticks) = deg/s, then to rad/s
+        deg_per_sec = raw_vel * (360.0 / self.servo_resolution)
+        return math.radians(deg_per_sec)
 
     # -------------------------------
     # Leader mode
@@ -186,17 +205,21 @@ class SO101Node(Node):
             return
         try:
             positions = self.bus.sync_read("Present_Position", normalize=True)
+            velocities = self.bus.sync_read("Present_Velocity", normalize=False)
             msg = JointState()
             msg.header = Header()
             msg.header.stamp = self.get_clock().now().to_msg()
             msg.name = []
             msg.position = []
+            msg.velocity = []
             for so101_name, val in positions.items():
                 our_name = {v: k for k, v in self.joint_name_map.items()}.get(so101_name)
                 if our_name:
                     msg.name.append(our_name)
                     msg.position.append(math.radians(val))
-            msg.velocity = [0.0] * len(msg.position)
+                    # Convert velocity from raw value to rad/s
+                    raw_vel = velocities.get(so101_name, 0)
+                    msg.velocity.append(self._raw_vel_to_rad_s(raw_vel))
             msg.effort = [0.0] * len(msg.position)
             self.joint_state_pub.publish(msg)
         except Exception as e:
@@ -260,16 +283,22 @@ class SO101Node(Node):
             return
         try:
             positions = self.bus.sync_read("Present_Position", normalize=True)
+            velocities = self.bus.sync_read("Present_Velocity", normalize=False)
             msg = JointState()
             msg.header = Header()
             msg.header.stamp = self.get_clock().now().to_msg()
             msg.name = []
             msg.position = []
+            msg.velocity = []
             for so101_name, val in positions.items():
                 our_name = {v: k for k, v in self.joint_name_map.items()}.get(so101_name)
                 if our_name:
                     msg.name.append(our_name)
                     msg.position.append(math.radians(val))
+                    # Convert velocity from raw value to rad/s
+                    raw_vel = velocities.get(so101_name, 0)
+                    msg.velocity.append(self._raw_vel_to_rad_s(raw_vel))
+            msg.effort = [0.0] * len(msg.position)
             self.local_pub.publish(msg)
         except Exception as e:
             self.get_logger().error(f'Follower publish error: {e}')
